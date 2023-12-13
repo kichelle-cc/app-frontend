@@ -5,8 +5,9 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM nginx:1.21.1-alpine
-COPY --from=react-build /app/build /usr/share/nginx/html
-EXPOSE 8080
-USER nginx
-CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]
+# Serve the app with a lightweight HTTP server
+FROM node:14-alpine
+WORKDIR /app
+COPY --from=0 /app/build .
+RUN npm install -g serve
+CMD ["serve", "-p", "80", "-s", "."]

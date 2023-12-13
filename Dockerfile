@@ -10,4 +10,5 @@ FROM node:14-alpine
 WORKDIR /app
 COPY --from=0 /app/build .
 RUN npm install -g serve
-CMD ["serve", "-p", "80", "-s", "."]
+EXPOSE 8080
+CMD ["serve", "-p", "8080", "-s", "."]

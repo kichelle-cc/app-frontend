@@ -7,6 +7,6 @@ RUN npm run build
 
 FROM nginx:1.21.1-alpine
 COPY --from=react-build /app/build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 8080
 USER nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]

@@ -1,14 +1,12 @@
-FROM node:18.17.1-alpine as react-build
+FROM node:14-alpine as react-build
 WORKDIR /app
-COPY package.json ./
+COPY package*.json ./
 RUN npm install
 COPY . .
-ENV PORT=80
-EXPOSE 8080
 RUN npm run build
 
-FROM nginx:alpine
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+FROM nginx:1.21.1-alpine
 COPY --from=react-build /app/build /usr/share/nginx/html
 EXPOSE 80
+USER nginx
 CMD ["nginx", "-g", "daemon off;"]
